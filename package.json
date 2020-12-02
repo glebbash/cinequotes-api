@@ -18,7 +18,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.js"
   },
   "dependencies": {
     "@google-cloud/firestore": "^4.2.0",
@@ -55,6 +55,7 @@
     "ts-loader": "^8.0.8",
     "ts-node": "^9.0.0",
     "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths-jest": "0.0.1",
     "typescript": "^4.0.5"
   },
   "jest": {

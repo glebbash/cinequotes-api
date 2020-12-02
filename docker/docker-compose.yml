@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+    pub-sub:
+        build: pub-sub
+        ports:
+            - 8505:8505
+    firestore:
+        build: firestore
+        ports:
+            - 8085:8085

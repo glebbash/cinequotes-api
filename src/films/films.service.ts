@@ -1,3 +1,4 @@
+import { FS_FILMS_COL } from '@/common/constants'
 import { FirestoreService } from '@/firestore/firestore.service'
 import { Injectable } from '@nestjs/common'
 import { FilmDto } from './film.dto'
@@ -8,8 +9,8 @@ export class FilmsService {
 
     async getAll(): Promise<FilmDto[]> {
         const films = await this.fireStore.db
-            .collection('films')
-            .select('name')
+            .collection(FS_FILMS_COL)
+            .select('title')
             .get()
 
         return films.docs.map((film) => ({

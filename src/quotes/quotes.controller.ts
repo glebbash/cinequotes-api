@@ -20,7 +20,7 @@ export class QuotesController {
 
     @Post()
     async createNewQuote(@Body() quote: CreateQuoteDto) {
-        await this.quotes.create(quote)
-        return { message: 'ok' }
+        const filmId = await this.quotes.create(quote)
+        return { message: 'ok', filmId }
     }
 }

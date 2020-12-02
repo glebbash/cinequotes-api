@@ -1,3 +1,4 @@
+import { FS_FILMS_COL, FS_QUOTES_COL } from '@/common/constants'
 import { FirestoreService } from '@/firestore/firestore.service'
 import { PubSubService } from '@/pub-sub/pub-sub.service'
 import { Injectable, NotFoundException } from '@nestjs/common'
@@ -13,9 +14,9 @@ export class QuotesService {
 
     async byFilm(filmId: string): Promise<QuoteDto[]> {
         const quotes = await this.fireStore.db
-            .collection('films')
+            .collection(FS_FILMS_COL)
             .doc(filmId)
-            .collection('quotes')
+            .collection(FS_QUOTES_COL)
             .get()
 
         if (quotes.empty) {
@@ -25,29 +26,33 @@ export class QuotesService {
         return quotes.docs.map((q) => q.data() as QuoteDto)
     }
 
-    async create(req: CreateQuoteDto) {
+    async create(req: CreateQuoteDto): Promise<string> {
         const films = await this.fireStore.db
-            .collection('films')
+            .collection(FS_FILMS_COL)
             .where('title', '==', req.film)
             .get()
 
         if (films.size > 1) {
-            throw new Error('Film duplicate name=' + req.film)
+            throw new Error(`Found duplicate film '${req.film}'`)
         }
 
         const filmRef = !films.empty
             ? films.docs[0].ref
             : await this.fireStore.db
-                  .collection('films')
+                  .collection(FS_FILMS_COL)
                   .add({ name: req.film })
 
-        const quoteRef = await filmRef.collection('quotes').add({
+        const quoteRef = await filmRef.collection(FS_QUOTES_COL).add({
             actor: req.actor,
-            quote: { en: req.quote },
+            quote: { en: req.quote, fr: req.quote }, // en quote fallback
         })
 
-        this.pubSub.publish({ quoteId: quoteRef.id, text: req.quote })
+        this.pubSub.publish({
+            filmId: filmRef.id,
+            quoteId: quoteRef.id,
+            text: req.quote,
+        })
 
-        return { message: 'ok' }
+        return filmRef.id
     }
 }

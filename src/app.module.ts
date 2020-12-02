@@ -1,18 +1,10 @@
-import { GcloudPubSubModule } from '@ecobee/nodejs-gcloud-pubsub-module'
 import { Module } from '@nestjs/common'
-import { AppController } from './app.controller'
 import { PubSubModule } from './pub-sub/pub-sub.module'
+import { QuotesModule } from './quotes/quotes.module'
+import { FilmsModule } from './films/films.module'
+import { FirestoreModule } from './firestore/firestore.module'
 
 @Module({
-    imports: [
-        GcloudPubSubModule.forRoot({
-            authOptions: {
-                projectId: 'dummy',
-                uri: 'localhost:8085',
-            },
-        }),
-        PubSubModule,
-    ],
-    controllers: [AppController],
+    imports: [PubSubModule, QuotesModule, FirestoreModule, FilmsModule],
 })
 export class AppModule {}

@@ -1,1 +1,1 @@
-export const PUBSUB_TOPIC = 'cinequotes'
+export const PUBSUB_TOPIC = 'Translate'

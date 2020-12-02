@@ -1,3 +1,4 @@
+import { FirestoreModule } from '@/firestore/firestore.module'
 import { Test, TestingModule } from '@nestjs/testing'
 import { FilmsService } from './films.service'
 
@@ -6,6 +7,7 @@ describe('FilmsService', () => {
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
+            imports: [FirestoreModule],
             providers: [FilmsService],
         }).compile()
 

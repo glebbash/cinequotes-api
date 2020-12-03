@@ -9,11 +9,11 @@ import { QuoteDto } from './quote.dto'
 export class QuotesService {
     constructor(
         private pubSub: PubSubService,
-        private fireStore: FirestoreService,
+        private firestore: FirestoreService,
     ) {}
 
     async byFilm(filmId: string): Promise<QuoteDto[]> {
-        const quotes = await this.fireStore.db
+        const quotes = await this.firestore.db
             .collection(FS_FILMS_COL)
             .doc(filmId)
             .collection(FS_QUOTES_COL)
@@ -27,7 +27,7 @@ export class QuotesService {
     }
 
     async create(req: CreateQuoteDto): Promise<string> {
-        const films = await this.fireStore.db
+        const films = await this.firestore.db
             .collection(FS_FILMS_COL)
             .where('title', '==', req.film)
             .get()
@@ -38,7 +38,7 @@ export class QuotesService {
 
         const filmRef = !films.empty
             ? films.docs[0].ref
-            : await this.fireStore.db
+            : await this.firestore.db
                   .collection(FS_FILMS_COL)
                   .add({ name: req.film })
 

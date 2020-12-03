@@ -3,7 +3,6 @@ import { Quote } from './models/quote.model'
 import { QuotesController } from './quotes.controller'
 import { QuotesService } from './quotes.service'
 import * as faker from 'faker'
-import { CreateQuote } from './models/create-quote.model'
 
 jest.mock('./quotes.service')
 
@@ -23,16 +22,20 @@ describe('QuotesController', () => {
 
     describe('getting quotes for film', () => {
         it('calls service with correct params', async () => {
+            const language = 'en'
             const filmId = faker.random.uuid()
             const mockQuotes: Quote[] = []
 
             const byFilmSpy = jest
-                .spyOn(service, 'byFilm')
+                .spyOn(service, 'getByFilm')
                 .mockResolvedValue(mockQuotes)
 
-            const quotes = await controller.getAllQuotesForFilm(filmId)
+            const quotes = await controller.getAllQuotesForFilm(
+                filmId,
+                language,
+            )
 
-            expect(byFilmSpy).toBeCalledWith(filmId)
+            expect(byFilmSpy).toBeCalledWith(filmId, language)
             expect(quotes).toEqual(mockQuotes)
         })
     })
@@ -40,10 +43,10 @@ describe('QuotesController', () => {
     describe('creating new quote', () => {
         it('calls service with correct params', async () => {
             const filmId = faker.random.uuid()
-            const quote: CreateQuote = {
-                film: '',
-                actor: '',
-                quote: '',
+            const quote: Quote = {
+                film: faker.name.title(),
+                actor: faker.name.findName(),
+                quote: faker.lorem.text(5),
             }
 
             const createSpy = jest

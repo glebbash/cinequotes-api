@@ -1,8 +1,8 @@
 {
   "name": "cinequotes-api",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Cinequotes API server",
+  "author": "glebbash",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

@@ -28,7 +28,7 @@ export class QuotesService {
 
             return {
                 actor: quote.actor,
-                quote: quote.quote[language] ?? quote.en,
+                quote: quote.quote[language] ?? quote.quote.en,
             }
         })
     }

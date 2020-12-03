@@ -19,6 +19,6 @@ async function bootstrap() {
     const pubsub = app.get(GcloudPubSubService).gcloudPubSubLib
     await pubsub.topic(PUBSUB_TOPIC).subscription(PUBSUB_SUBSCRIPTION).get()
 
-    await app.listen(3000)
+    await app.listen(process.env.PORT ?? 3000)
 }
 bootstrap()

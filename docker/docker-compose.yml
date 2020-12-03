@@ -2,10 +2,10 @@ version: '3'
 
 services:
     pub-sub:
-        build: pub-sub/
+        build: pub-sub
         ports:
             - 8085:8085
     firestore:
-        build: firestore/
+        build: firestore
         ports:
             - 8505:8505

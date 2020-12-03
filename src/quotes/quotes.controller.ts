@@ -1,7 +1,5 @@
-
-import { Body, Controller, Get, Optional, Param, Post, Query } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common'
 import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { CreateQuote } from './models/create-quote.model'
 import { QuoteCreated } from './models/quote-created.model'
 import { QuoteNotFound } from './models/quote-not-found.model'
 import { Quote } from './models/quote.model'
@@ -24,7 +22,7 @@ export class QuotesController {
 
     @Post()
     @ApiResponse({ status: 201, type: QuoteCreated })
-    async createNewQuote(@Body() quote: CreateQuote): Promise<QuoteCreated> {
+    async createNewQuote(@Body() quote: Quote): Promise<QuoteCreated> {
         const filmId = await this.quotes.create(quote)
         return { filmId }
     }

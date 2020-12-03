@@ -15,7 +15,7 @@ export class FilmsService {
 
         return films.docs.map((film) => ({
             id: film.id,
-            title: film.data().name,
+            title: film.data().title,
         }))
     }
 }

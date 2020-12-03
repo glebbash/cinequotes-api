@@ -1,20 +1,63 @@
-import { FirestoreModule } from '@/firestore/firestore.module'
+import { FirestoreService } from '@/firestore/firestore.service'
 import { Test, TestingModule } from '@nestjs/testing'
 import { FilmsService } from './films.service'
+import * as faker from 'faker'
+import { FS_FILMS_COL } from '@/common/constants'
 
 describe('FilmsService', () => {
+    const mockFirestore: any = {
+        db: {
+            collection: jest.fn(),
+        },
+    }
+    const mockCollection: any = {
+        select: jest.fn(),
+        get: jest.fn(),
+    }
+
     let service: FilmsService
+    let fireStore: FirestoreService
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            imports: [FirestoreModule],
-            providers: [FilmsService],
+            providers: [
+                { provide: FirestoreService, useValue: mockFirestore },
+                FilmsService,
+            ],
         }).compile()
 
-        service = module.get<FilmsService>(FilmsService)
+        service = module.get(FilmsService)
+        fireStore = module.get(FirestoreService)
     })
 
-    it('should be defined', () => {
-        expect(service).toBeDefined()
+    it('should select correct data', async () => {
+        const filmsSnapshot = {
+            docs: Array(5).fill(null).map(generateFilm),
+        }
+        const mockFoundFilms = filmsSnapshot.docs.map((film) => ({
+            id: film.id,
+            title: film.data().title,
+        }))
+
+        const collectionSpy = jest
+            .spyOn(fireStore.db, 'collection')
+            .mockReturnValue(mockCollection)
+        const selectSpy = jest.spyOn(mockCollection, 'select').mockReturnThis()
+        jest.spyOn(mockCollection, 'get').mockResolvedValue(filmsSnapshot)
+
+        const foundFilms = await service.getAll()
+
+        expect(collectionSpy).toBeCalledWith(FS_FILMS_COL)
+        expect(selectSpy).toBeCalledWith('title')
+        expect(foundFilms).toEqual(mockFoundFilms)
     })
 })
+
+function generateFilm() {
+    const data = { title: faker.name.title() }
+
+    return {
+        id: faker.random.uuid(),
+        data: () => data,
+    }
+}

@@ -12,7 +12,7 @@ export class QuotesService {
         private firestore: FirestoreService,
     ) {}
 
-    async byFilm(filmId: string): Promise<Quote[]> {
+    async getByFilm(filmId: string, language: string): Promise<Quote[]> {
         const quotes = await this.firestore.db
             .collection(FS_FILMS_COL)
             .doc(filmId)
@@ -23,7 +23,15 @@ export class QuotesService {
             throw new NotFoundException()
         }
 
-        return quotes.docs.map((q) => q.data() as Quote)
+        return quotes.docs.map((q) => {
+            const quote = q.data()
+
+            return {
+                film: quote.film,
+                actor: quote.actor,
+                quote: quote.quote[language] ?? quote.en,
+            }
+        })
     }
 
     async create(req: CreateQuote): Promise<string> {
@@ -50,7 +58,7 @@ export class QuotesService {
         this.pubSub.publish({
             filmId: filmRef.id,
             quoteId: quoteRef.id,
-            text: req.quote,
+            quote: req.quote,
         })
 
         return filmRef.id

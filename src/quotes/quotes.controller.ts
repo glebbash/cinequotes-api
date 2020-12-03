@@ -21,6 +21,6 @@ export class QuotesController {
     @Post()
     async createNewQuote(@Body() quote: CreateQuoteDto) {
         const filmId = await this.quotes.create(quote)
-        return { message: 'ok', filmId }
+        return { filmId }
     }
 }

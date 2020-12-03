@@ -3,6 +3,7 @@ import { Quote } from './models/quote.model'
 import { QuotesController } from './quotes.controller'
 import { QuotesService } from './quotes.service'
 import * as faker from 'faker'
+import { CreateQuote } from './models/create-quote.model'
 
 jest.mock('./quotes.service')
 
@@ -21,7 +22,7 @@ describe('QuotesController', () => {
     })
 
     describe('getting quotes for film', () => {
-        it('calls service with correct params', () => {
+        it('calls service with correct params', async () => {
             const filmId = faker.random.uuid()
             const mockQuotes: Quote[] = []
 
@@ -29,7 +30,7 @@ describe('QuotesController', () => {
                 .spyOn(service, 'byFilm')
                 .mockResolvedValue(mockQuotes)
 
-            const quotes = controller.getAllQuotesForFilm(filmId)
+            const quotes = await controller.getAllQuotesForFilm(filmId)
 
             expect(byFilmSpy).toBeCalledWith(filmId)
             expect(quotes).toEqual(mockQuotes)
@@ -37,8 +38,22 @@ describe('QuotesController', () => {
     })
 
     describe('creating new quote', () => {
-        it('calls service with correct params', () => {
-            expect(controller).toBeDefined()
+        it('calls service with correct params', async () => {
+            const filmId = faker.random.uuid()
+            const quote: CreateQuote = {
+                film: '',
+                actor: '',
+                quote: '',
+            }
+
+            const createSpy = jest
+                .spyOn(service, 'create')
+                .mockResolvedValue(filmId)
+
+            const response = await controller.createNewQuote(quote)
+
+            expect(createSpy).toBeCalledWith(quote)
+            expect(response).toEqual({ filmId })
         })
     })
 })

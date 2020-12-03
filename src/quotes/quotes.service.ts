@@ -2,8 +2,8 @@ import { FS_FILMS_COL, FS_QUOTES_COL } from '@/common/constants'
 import { FirestoreService } from '@/firestore/firestore.service'
 import { PubSubService } from '@/pub-sub/pub-sub.service'
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { CreateQuoteDto } from './create-quote.dto'
-import { QuoteDto } from './quote.dto'
+import { CreateQuote } from './create-quote.model'
+import { Quote } from './quote.model'
 
 @Injectable()
 export class QuotesService {
@@ -12,7 +12,7 @@ export class QuotesService {
         private firestore: FirestoreService,
     ) {}
 
-    async byFilm(filmId: string): Promise<QuoteDto[]> {
+    async byFilm(filmId: string): Promise<Quote[]> {
         const quotes = await this.firestore.db
             .collection(FS_FILMS_COL)
             .doc(filmId)
@@ -23,10 +23,10 @@ export class QuotesService {
             throw new NotFoundException()
         }
 
-        return quotes.docs.map((q) => q.data() as QuoteDto)
+        return quotes.docs.map((q) => q.data() as Quote)
     }
 
-    async create(req: CreateQuoteDto): Promise<string> {
+    async create(req: CreateQuote): Promise<string> {
         const films = await this.firestore.db
             .collection(FS_FILMS_COL)
             .where('title', '==', req.film)

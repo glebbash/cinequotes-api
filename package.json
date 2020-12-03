@@ -15,10 +15,10 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest --config ./jest.config.js",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:watch": "jest --config ./jest.config.js --watch",
+    "test:cov": "jest --config ./jest.config.js --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.js"
+    "test:e2e": "jest --config ./jest.e2e.config.js"
   },
   "dependencies": {
     "@ecobee/nodejs-gcloud-pubsub-module": "^0.4.0",
@@ -57,22 +57,5 @@
     "tsconfig-paths": "^3.9.0",
     "tsconfig-paths-jest": "0.0.1",
     "typescript": "^4.0.5"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   }
 }

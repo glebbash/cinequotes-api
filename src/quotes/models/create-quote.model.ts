@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class Quote {
+export class CreateQuote {
+    @ApiProperty()
+    film: string
+
     @ApiProperty()
     actor: string
 

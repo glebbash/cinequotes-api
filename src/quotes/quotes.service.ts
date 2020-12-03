@@ -2,6 +2,7 @@ import { FS_FILMS_COL, FS_QUOTES_COL } from '@/common/constants'
 import { FirestoreService } from '@/firestore/firestore.service'
 import { PubSubService } from '@/pub-sub/pub-sub.service'
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { CreateQuote } from './models/create-quote.model'
 import { Quote } from './models/quote.model'
 
 @Injectable()
@@ -26,14 +27,13 @@ export class QuotesService {
             const quote = q.data()
 
             return {
-                film: quote.film,
                 actor: quote.actor,
                 quote: quote.quote[language] ?? quote.en,
             }
         })
     }
 
-    async create(req: Quote): Promise<string> {
+    async create(req: CreateQuote): Promise<string> {
         const films = await this.firestore.db
             .collection(FS_FILMS_COL)
             .where('title', '==', req.film)

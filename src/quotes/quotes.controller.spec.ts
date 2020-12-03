@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { Quote } from './quote.model'
+import { Quote } from './models/quote.model'
 import { QuotesController } from './quotes.controller'
 import { QuotesService } from './quotes.service'
 import * as faker from 'faker'

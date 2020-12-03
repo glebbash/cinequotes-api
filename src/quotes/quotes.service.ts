@@ -2,8 +2,8 @@ import { FS_FILMS_COL, FS_QUOTES_COL } from '@/common/constants'
 import { FirestoreService } from '@/firestore/firestore.service'
 import { PubSubService } from '@/pub-sub/pub-sub.service'
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { CreateQuote } from './create-quote.model'
-import { Quote } from './quote.model'
+import { CreateQuote } from './models/create-quote.model'
+import { Quote } from './models/quote.model'
 
 @Injectable()
 export class QuotesService {

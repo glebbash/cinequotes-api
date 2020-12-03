@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { FilmsController } from './films.controller'
 import { FilmsService } from './films.service'
-import { FilmDto } from './film.dto'
+import { Film } from './film.model'
 import * as faker from 'faker'
 
 jest.mock('./films.service')
@@ -22,7 +22,7 @@ describe('FilmsController', () => {
 
     describe('getting all films', () => {
         it('calls service getAll', async () => {
-            const foundFilms: FilmDto[] = [
+            const foundFilms: Film[] = [
                 { id: faker.random.uuid(), title: faker.name.title() },
                 { id: faker.random.uuid(), title: faker.name.title() },
             ]

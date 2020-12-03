@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common'
 import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { CreateQuote } from './create-quote.model'
-import { QuoteCreated } from './quote-created.model'
-import { QuoteNotFound } from './quote-not-found.model'
-import { Quote } from './quote.model'
+import { CreateQuote } from './models/create-quote.model'
+import { QuoteCreated } from './models/quote-created.model'
+import { QuoteNotFound } from './models/quote-not-found.model'
+import { Quote } from './models/quote.model'
 import { QuotesService } from './quotes.service'
 
 @ApiTags('quotes')

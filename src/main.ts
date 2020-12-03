@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder } from '@nestjs/swagger/dist/document-builder'
 import { SwaggerModule } from '@nestjs/swagger/dist/swagger-module'
 import { AppModule } from './app.module'
+import { AllExceptionsFilter } from './common/all-exceptions-filter'
 import { PUBSUB_TOPIC, PUBSUB_SUBSCRIPTION } from './common/constants'
 
 async function bootstrap() {
@@ -18,6 +19,8 @@ async function bootstrap() {
 
     const pubsub = app.get(GcloudPubSubService).gcloudPubSubLib
     await pubsub.topic(PUBSUB_TOPIC).subscription(PUBSUB_SUBSCRIPTION).get()
+
+    app.useGlobalFilters(new AllExceptionsFilter())
 
     await app.listen(process.env.PORT ?? 3000)
 }

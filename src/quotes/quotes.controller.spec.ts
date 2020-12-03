@@ -3,6 +3,7 @@ import { Quote } from './models/quote.model'
 import { QuotesController } from './quotes.controller'
 import { QuotesService } from './quotes.service'
 import * as faker from 'faker'
+import { CreateQuote } from './models/create-quote.model'
 
 jest.mock('./quotes.service')
 
@@ -43,7 +44,7 @@ describe('QuotesController', () => {
     describe('creating new quote', () => {
         it('calls service with correct params', async () => {
             const filmId = faker.random.uuid()
-            const quote: Quote = {
+            const quote: CreateQuote = {
                 film: faker.name.title(),
                 actor: faker.name.findName(),
                 quote: faker.lorem.text(5),

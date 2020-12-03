@@ -34,10 +34,9 @@ export class QuotesService {
     }
 
     async create(req: CreateQuote): Promise<string> {
-        const films = await this.firestore.db
-            .collection(FS_FILMS_COL)
-            .where('title', '==', req.film)
-            .get()
+        const filmsCol = this.firestore.db.collection(FS_FILMS_COL)
+
+        const films = await filmsCol.where('title', '==', req.film).get()
 
         if (films.size > 1) {
             throw new Error(`Found duplicate film '${req.film}'`)
@@ -45,10 +44,7 @@ export class QuotesService {
 
         const filmRef = !films.empty
             ? films.docs[0].ref
-            : await this.firestore.db
-                  .collection(FS_FILMS_COL)
-                  .add({ name: req.film })
-
+            : await filmsCol.add({ title: req.film })
         const quoteRef = await filmRef.collection(FS_QUOTES_COL).add({
             actor: req.actor,
             quote: { en: req.quote, fr: req.quote }, // en quote fallback

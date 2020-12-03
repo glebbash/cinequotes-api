@@ -16,7 +16,7 @@ describe('FilmsService', () => {
     }
 
     let service: FilmsService
-    let fireStore: FirestoreService
+    let firestore: FirestoreService
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -27,7 +27,7 @@ describe('FilmsService', () => {
         }).compile()
 
         service = module.get(FilmsService)
-        fireStore = module.get(FirestoreService)
+        firestore = module.get(FirestoreService)
     })
 
     it('should select correct data', async () => {
@@ -40,7 +40,7 @@ describe('FilmsService', () => {
         }))
 
         const collectionSpy = jest
-            .spyOn(fireStore.db, 'collection')
+            .spyOn(firestore.db, 'collection')
             .mockReturnValue(mockCollection)
         const selectSpy = jest.spyOn(mockCollection, 'select').mockReturnThis()
         jest.spyOn(mockCollection, 'get').mockResolvedValue(filmsSnapshot)

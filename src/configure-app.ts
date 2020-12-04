@@ -2,7 +2,7 @@ import { GcloudPubSubService } from '@ecobee/nodejs-gcloud-pubsub-module'
 import { INestApplication } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AllExceptionsFilter } from './common/all-exceptions-filter'
-import { PUBSUB_TOPIC, PUBSUB_SUBSCRIPTION } from './common/constants'
+import { setupPubSub } from './common/setup-pub-sub'
 
 export async function configureApp(app: INestApplication) {
     const options = new DocumentBuilder()
@@ -14,11 +14,7 @@ export async function configureApp(app: INestApplication) {
     SwaggerModule.setup('docs', app, document)
 
     const pubsub = app.get(GcloudPubSubService).gcloudPubSubLib
-    const topic = pubsub.topic(PUBSUB_TOPIC)
-    const subscription = topic.subscription(PUBSUB_SUBSCRIPTION)
-    if (!(await subscription.exists())) {
-        await subscription.create()
-    }
+    await setupPubSub(pubsub)
 
     app.useGlobalFilters(new AllExceptionsFilter())
 }

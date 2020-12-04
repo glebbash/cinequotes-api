@@ -5,6 +5,11 @@ import { FilmsModule } from '@/films/films.module'
 import { FirestoreModule } from '@/firestore/firestore.module'
 
 @Module({
-    imports: [PubSubModule, QuotesModule, FirestoreModule, FilmsModule],
+    imports: [
+        FirestoreModule.forRoot(),
+        PubSubModule,
+        QuotesModule,
+        FilmsModule,
+    ],
 })
 export class AppModule {}

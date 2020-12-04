@@ -19,7 +19,7 @@ describe('PubSubService', () => {
         pubsub = module.get(GcloudPubSubService)
     })
 
-    it('publishes stringified messages', async () => {
+    it('publishes stringified messages', async (done) => {
         const message = {
             actor: faker.name.findName(),
         }
@@ -34,5 +34,6 @@ describe('PubSubService', () => {
 
         expect(publishSpy).toBeCalledWith(PUBSUB_TOPIC, json)
         expect(result).toEqual(mockResult)
+        done()
     })
 })

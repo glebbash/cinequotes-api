@@ -48,7 +48,7 @@ describe('QuotesService', () => {
     })
 
     describe('getting quotes by film', () => {
-        it('finds film and gets translated quotes', async () => {
+        it('finds film and gets translated quotes', async (done) => {
             const filmId = faker.random.uuid()
             const language = 'fr'
             const quotesSnapshot = {
@@ -87,9 +87,10 @@ describe('QuotesService', () => {
             expect(mockFilmsCol.doc).toBeCalledWith(filmId)
             expect(mockFilmDoc.collection).toHaveBeenCalledWith(FS_QUOTES_COL)
             expect(quotes).toEqual(mockQuotes)
+            done()
         })
 
-        it('finds film and falls back to eng quotes', async () => {
+        it('finds film and falls back to eng quotes', async (done) => {
             const filmId = faker.random.uuid()
             const language = 'fr'
             const quotesSnapshot = {
@@ -128,9 +129,10 @@ describe('QuotesService', () => {
             expect(mockFilmsCol.doc).toBeCalledWith(filmId)
             expect(mockFilmDoc.collection).toHaveBeenCalledWith(FS_QUOTES_COL)
             expect(quotes).toEqual(mockQuotes)
+            done()
         })
 
-        it('does not find film', async () => {
+        it('does not find film', async (done) => {
             const filmId = faker.random.uuid()
             const language = 'fr'
             const quotesSnapshot = {
@@ -146,11 +148,12 @@ describe('QuotesService', () => {
             } catch (e) {
                 expect(e).toBeInstanceOf(NotFoundException)
             }
+            done()
         })
     })
 
     describe('creating quote', () => {
-        it('adds quote to existing film', async () => {
+        it('adds quote to existing film', async (done) => {
             const mockFilmId = faker.random.uuid()
             mockFilmDoc.id = mockFilmId
 
@@ -193,9 +196,10 @@ describe('QuotesService', () => {
                 quote: quote.quote,
             })
             expect(filmId).toEqual(mockFilmId)
+            done()
         })
 
-        it('adds quote and creates film', async () => {
+        it('adds quote and creates film', async (done) => {
             const mockFilmId = faker.random.uuid()
             mockFilmDoc.id = mockFilmId
 
@@ -236,9 +240,10 @@ describe('QuotesService', () => {
                 quote: quote.quote,
             })
             expect(filmId).toEqual(mockFilmId)
+            done()
         })
 
-        it('finds duplicate film', async () => {
+        it('finds duplicate film', async (done) => {
             const quote: CreateQuote = {
                 film: 'Star Wars',
                 actor: 'Harrison Ford',
@@ -266,6 +271,7 @@ describe('QuotesService', () => {
             } catch (e) {
                 expect(e).toBeInstanceOf(Error)
             }
+            done()
         })
     })
 })

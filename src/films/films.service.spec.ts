@@ -30,7 +30,7 @@ describe('FilmsService', () => {
         firestore = module.get(FirestoreService)
     })
 
-    it('should select correct data', async () => {
+    it('should select correct data', async (done) => {
         const filmsSnapshot = {
             docs: Array(5).fill(null).map(generateFilm),
         }
@@ -50,6 +50,7 @@ describe('FilmsService', () => {
         expect(collectionSpy).toBeCalledWith(FS_FILMS_COL)
         expect(selectSpy).toBeCalledWith('title')
         expect(foundFilms).toEqual(mockFoundFilms)
+        done()
     })
 })
 

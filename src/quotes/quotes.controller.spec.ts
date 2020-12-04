@@ -22,7 +22,7 @@ describe('QuotesController', () => {
     })
 
     describe('getting quotes for film', () => {
-        it('calls service with correct params', async () => {
+        it('calls service with correct params', async (done) => {
             const language = 'en'
             const filmId = faker.random.uuid()
             const mockQuotes: Quote[] = []
@@ -38,11 +38,12 @@ describe('QuotesController', () => {
 
             expect(byFilmSpy).toBeCalledWith(filmId, language)
             expect(quotes).toEqual(mockQuotes)
+            done()
         })
     })
 
     describe('creating new quote', () => {
-        it('calls service with correct params', async () => {
+        it('calls service with correct params', async (done) => {
             const filmId = faker.random.uuid()
             const quote: CreateQuote = {
                 film: faker.name.title(),
@@ -58,6 +59,7 @@ describe('QuotesController', () => {
 
             expect(createSpy).toBeCalledWith(quote)
             expect(response).toEqual({ filmId })
+            done()
         })
     })
 })

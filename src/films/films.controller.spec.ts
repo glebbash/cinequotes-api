@@ -21,7 +21,7 @@ describe('FilmsController', () => {
     })
 
     describe('getting all films', () => {
-        it('calls service getAll', async () => {
+        it('calls service getAll', async (done) => {
             const foundFilms: Film[] = [
                 { id: faker.random.uuid(), title: faker.name.title() },
                 { id: faker.random.uuid(), title: faker.name.title() },
@@ -35,6 +35,7 @@ describe('FilmsController', () => {
 
             expect(getAllSpy).toBeCalledTimes(1)
             expect(res).toEqual(foundFilms)
+            done()
         })
     })
 })

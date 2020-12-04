@@ -14,7 +14,11 @@ export async function configureApp(app: INestApplication) {
     SwaggerModule.setup('docs', app, document)
 
     const pubsub = app.get(GcloudPubSubService).gcloudPubSubLib
-    await pubsub.topic(PUBSUB_TOPIC).subscription(PUBSUB_SUBSCRIPTION).get()
+    const topic = pubsub.topic(PUBSUB_TOPIC)
+    const subscription = topic.subscription(PUBSUB_SUBSCRIPTION)
+    if (!(await subscription.exists())) {
+        await subscription.create()
+    }
 
     app.useGlobalFilters(new AllExceptionsFilter())
 }

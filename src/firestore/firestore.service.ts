@@ -1,11 +1,7 @@
-import { Injectable } from '@nestjs/common'
 import { Firestore } from '@google-cloud/firestore'
 
-@Injectable()
 export class FirestoreService {
-    db: Firestore
-
-    constructor(projectId: string) {
-        this.db = new Firestore({ projectId })
-    }
+    db = new Firestore({
+        projectId: process.env.FIRESTORE_PROJECT_ID ?? 'dummy-test',
+    })
 }
